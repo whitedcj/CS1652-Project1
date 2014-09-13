@@ -11,8 +11,11 @@ int main (int argc, const char* argv[])
 {
   //Parse args
   char * server_name = argv[2];
+  printf("%s", server_name);
   int server_port = atoi(argv[3]);
+  printf("%i", server_port);
   char * server_path = argv[4];
+  printf("%s", server_path);
   
   printf("Parsed args");
   
