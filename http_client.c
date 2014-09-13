@@ -14,6 +14,8 @@ int main (int argc, const char* argv[])
   int server_port = atoi(argv[3]);
   char * server_path = argv[4];
   
+  printf("Parsed args");
+  
   //Create and connect to socket
   int sock=socket(AF_INET,SOCK_STREAM,0);
   
@@ -25,6 +27,8 @@ int main (int argc, const char* argv[])
   
   connect(sock, (struct sockaddr *)&sa, sizeof(sa));
   
+  printf("Connected\n");
+  
   //Read from server
   //char * bufout = ”Hello”;
   //char bufin[80];
@@ -33,6 +37,8 @@ int main (int argc, const char* argv[])
   
   //Close socket
   close(sock);
+  
+  printf("Closed socket\n");
   
   return 0;
 }
