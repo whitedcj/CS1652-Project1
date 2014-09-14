@@ -20,10 +20,8 @@ int main (int argc, const char* argv[])
   //Create and connect to socket
   int sock=socket(AF_INET,SOCK_STREAM,0);
   
-  if(sock<0)
-    perror("Socket failed");
-  
   printf("Socket: %i", sock);
+  fflush(stdout);
   
   struct sockaddr_in sa;
   memset(&sa, 0 ,sizeof(sa));
@@ -34,6 +32,7 @@ int main (int argc, const char* argv[])
   connect(sock, (struct sockaddr *)&sa, sizeof(sa));
   
   printf("Connected\n");
+  fflush(stdout);
   
   //Read from server
   //char * bufout = ”Hello”;
@@ -45,6 +44,7 @@ int main (int argc, const char* argv[])
   close(sock);
   
   printf("Closed socket\n");
+  fflush(stdout);
   
   
   return 0;
