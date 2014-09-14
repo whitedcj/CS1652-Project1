@@ -11,17 +11,16 @@ int main (int argc, const char* argv[])
 {
   //Parse args
   char* server_name = argv[2];
-  printf("%s", server_name);
+  printf("Server: %s\n", server_name);
   int server_port = atoi(argv[3]);
-  printf("%i", server_port);
+  printf("Port: %i\n", server_port);
   char* server_path = argv[4];
-  printf("%s", server_path);
-  
-  printf("Parsed args\n");
-  printf("~%s\n%s\n%s\n%s\n%s", argv[0], argv[1], server_name, argv[3], argv[4]);
+  printf("Path: %s\n", server_path);
   
   //Create and connect to socket
   int sock=socket(AF_INET,SOCK_STREAM,0);
+  
+  printf("Socket: %i", sock);
   
   struct sockaddr_in sa;
   memset(&sa, 0 ,sizeof(sa));
