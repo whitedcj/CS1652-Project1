@@ -11,39 +11,7 @@ int main (int argc, const char* argv[])
 {
   printf("Started");
   
-  //Parse args
-  char * server_name = argv[2];
-  printf("%s", server_name);
-  int server_port = atoi(argv[3]);
-  printf("%i", server_port);
-  char * server_path = argv[4];
-  printf("%s", server_path);
   
-  printf("Parsed args");
-  
-  //Create and connect to socket
-  int sock=socket(AF_INET,SOCK_STREAM,0);
-  
-  struct sockaddr_in sa;
-  memset(&sa, 0 ,sizeof(sa));
-  sa.sin_port = htons(server_port); //1500
-  sa.sin_addr.s_addr = htonl(gethostbyname(server_name));
-  sa.sin_family = AF_INET;
-  
-  connect(sock, (struct sockaddr *)&sa, sizeof(sa));
-  
-  printf("Connected\n");
-  
-  //Read from server
-  //char * bufout = ”Hello”;
-  //char bufin[80];
-  //write(sock, bufout, strlen(bufout) + 1);
-  //int n = read(sock, bufin, 80);
-  
-  //Close socket
-  close(sock);
-  
-  printf("Closed socket\n");
   
   return 0;
 }
