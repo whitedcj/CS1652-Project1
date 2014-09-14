@@ -18,7 +18,10 @@ int main (int argc, const char* argv[])
   printf("Path: %s\n", server_path);
   
   //Create and connect to socket
-  int sock=socket(PF_INET,SOCK_STREAM,0);
+  int sock=socket(AF_INET,SOCK_STREAM,0);
+  
+  if(sock<0)
+    perror("Socket failed");
   
   printf("Socket: %i", sock);
   
