@@ -9,6 +9,8 @@
 
 int main (int argc, const char* argv[])
 {
+  printf("Started");
+  
   //Parse args
   char * server_name = argv[2];
   printf("%s", server_name);
