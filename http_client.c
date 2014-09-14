@@ -12,11 +12,11 @@ int main (int argc, const char* argv[])
   printf("Started, %s\n %s\n%s\n%s\n%s", argv[0], argv[1], argv[2], argv[3], argv[4]);
   
   //Parse args
-  char * server_name = argv[2];
+  char* server_name = argv[2];
   printf("%s", server_name);
   int server_port = atoi(argv[3]);
   printf("%i", server_port);
-  char * server_path = argv[4];
+  char* server_path = argv[4];
   printf("%s", server_path);
   
   printf("Parsed args");
