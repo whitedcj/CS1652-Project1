@@ -12,7 +12,8 @@ int main (int argc, const char* argv[])
   printf("Started, %s\n %s\n%s\n%s\n%s", argv[0], argv[1], argv[2], argv[3], argv[4]);
   
   //Parse args
-  char * server_name = argv[2];
+  char * server_name = malloc(sizeof(char)*1024);
+  strcpy(server_name, argv[2]);
   printf("%s", server_name);
   int server_port = atoi(argv[3]);
   printf("%i", server_port);
