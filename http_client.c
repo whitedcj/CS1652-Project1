@@ -9,7 +9,8 @@
 
 int main (int argc, const char* argv[])
 {
-  printf("Started");
+  printf("Started, %s\n %s\n%s\n%s\n%s", argv[0], argv[1], argv[2], argv[3], argv[4]);
+  
   
   
   
