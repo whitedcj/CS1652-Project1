@@ -1,8 +1,8 @@
-//#include <string.h>
-//#include <sys/types.h>
+#include <string.h>
+#include <sys/types.h>
 #include <sys/socket.h>
-//#include <netinet/in.h>
-//#include <arpa/inet.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 #include <stdio.h>
 #include <stdlib.h>
 //#include <netdb.h>
@@ -18,7 +18,7 @@ int main (int argc, const char* argv[])
   printf("Path: %s\n", server_path);
   
   //Create and connect to socket
-  int sock=socket(AF_INET,SOCK_STREAM,0);
+  int sock=socket(PF_INET,SOCK_STREAM,0);
   
   printf("Socket: %i", sock);
   
