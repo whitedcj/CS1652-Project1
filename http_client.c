@@ -11,15 +11,14 @@ int main (int argc, const char* argv[])
 {
   //Parse args
   char* server_name = argv[2];
-  printf("Started, %s\n%s\n%s\n%s\n%s", argv[0], argv[1], server_name, argv[3], argv[4]);
-  
   printf("%s", server_name);
   int server_port = atoi(argv[3]);
   printf("%i", server_port);
   char* server_path = argv[4];
   printf("%s", server_path);
   
-  printf("Parsed args");
+  printf("Parsed args\n");
+  printf("~%s\n%s\n%s\n%s\n%s", argv[0], argv[1], server_name, argv[3], argv[4]);
   
   //Create and connect to socket
   int sock=socket(AF_INET,SOCK_STREAM,0);
