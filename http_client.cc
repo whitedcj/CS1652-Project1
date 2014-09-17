@@ -20,6 +20,7 @@ int main(int argc, char * argv[]) {
     char * server_path = NULL;
     char * req         = NULL;
     bool ok            = false;
+    struct hostent *hp;
 
     /*parse args */
     if (argc != 5) {
@@ -67,11 +68,15 @@ int main(int argc, char * argv[]) {
   fflush(stdout);
   
   /* get host IP address  */
+  if ((hp = gethostbyname(server_name)) == NULL) {
+    printf("Could not find host %s\n", server_name);
+  }
+  
   /* set address */
   struct sockaddr_in sa;
   memset(&sa, 0 ,sizeof(sa));
   sa.sin_port = htons(server_port); //1500
-  sa.sin_addr.s_addr = htonl(gethostbyname(server_name));
+  memcpy(&sa.sin_addr.s_addr, hp->h_addr, hp->length);
   sa.sin_family = AF_INET;
   
   /* connect to the server socket */
