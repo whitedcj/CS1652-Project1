@@ -21,6 +21,7 @@ int main(int argc, char * argv[]) {
     char * req         = NULL;
     bool ok            = false;
     struct hostent *hp;
+    fd_set read_fd;
 
     /*parse args */
     if (argc != 5) {
@@ -50,7 +51,7 @@ int main(int argc, char * argv[]) {
     }
   
   /* make socket */
-  int sock=socket(AF_INET,SOCK_STREAM,0);
+  int sd=socket(AF_INET,SOCK_STREAM,0);
   
   /* get host IP address  */
   if ((hp = gethostbyname(server_name)) == NULL) {
@@ -65,7 +66,7 @@ int main(int argc, char * argv[]) {
   sa.sin_family = AF_INET;
   
   /* connect to the server socket */
-  if (connect(sock, (struct sockaddr *)&sa, sizeof(sa))<0) {
+  if (connect(sd, (struct sockaddr *)&sa, sizeof(sa))<0) {
     printf("Failed connect\n"); 
   }
   
@@ -76,7 +77,11 @@ int main(int argc, char * argv[]) {
   sprintf(req, "GET %s HTTP/1.0\r\n\r\n", server_path);
   
   /* wait till socket can be read. */
-  /* Hint: use select(), and ignore timeout for now. */
+  FD_ZERO(&read_fd);
+  FD_SET(sd, &read_fd);
+  int rc = select(sd+1, &read_fd, NULL, NULL, &timeout);
+  
+  printf("rc: %i", rc);
   
   //Read from server
   //char * bufout = ”Hello”;
