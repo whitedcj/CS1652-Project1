@@ -113,7 +113,7 @@ int main(int argc, char * argv[]) {
     /* second read loop -- print out the rest of the response: real web content */
 
     /*close socket and deinitialize */
-    close(sock);
+    shutdown(sock);
   
     printf("Closed socket\n");
     fflush(stdout);
