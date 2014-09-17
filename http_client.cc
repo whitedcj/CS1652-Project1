@@ -75,7 +75,7 @@ int main(int argc, char * argv[]) {
   sa.sin_family = AF_INET;
   
   /* connect to the server socket */
-  if ((connect(sock, (struct sockaddr *)&sa, sizeof(sa))<0) {
+  if (connect(sock, (struct sockaddr *)&sa, sizeof(sa))<0) {
     printf("Failed connect\n"); 
   }
   
