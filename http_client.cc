@@ -52,14 +52,6 @@ int main(int argc, char * argv[]) {
 	fprintf(stderr, "First argument must be k or u\n");
 	exit(-1);
     }
-
-   //Parse args
-  //char* server_name = argv[2];
-  //printf("Server: %s\n", server_name);
-  //int server_port = atoi(argv[3]);
-  //printf("Port: %i\n", server_port);
-  //char* server_path = argv[4];
-  //printf("Path: %s\n", server_path);
   
   /* make socket */
   int sock=socket(AF_INET,SOCK_STREAM,0);
