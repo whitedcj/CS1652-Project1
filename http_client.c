@@ -43,7 +43,7 @@ int main (int argc, const char* argv[])
   //int n = read(sock, bufin, 80);
   
   //Close socket
-  close(sock);
+  shutdown(sock, 0);
   
   printf("Closed socket\n");
   fflush(stdout);
