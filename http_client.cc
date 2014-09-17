@@ -77,6 +77,7 @@ int main(int argc, char * argv[]) {
   
   /* send request message */
   sprintf(req, "GET %s HTTP/1.0\r\n\r\n", server_path);
+  send(sd, req, strlen(req), 0);
   
   //Set up timeout
   timeout.tv_sec = 10;
