@@ -87,21 +87,10 @@ int main(int argc, char * argv[]) {
     FD_SET(sd, &read_fd);
     int rc = select(sd+1, &read_fd, NULL, NULL, &timeout);
   
-    /* first read loop -- read headers */
-    char bufin[80];
-    int n = read(sd, bufin, 80);
-    while (n>0)
-    {
-    	printf("%s", bufin);
-  	n = read(sd, bufin, 80);
-    }
-  
-    /* examine return code */
-    
-    //Skip "HTTP/1.0"
-    //remove the '\0'
-
-    // Normal reply has return code 200
+    /* check response header code */
+    char status[12];
+    int n = read(sd, status, 12);
+    printf("Response status: %s", status);
 
     /* print first part of response: header, error code, etc. */
 
