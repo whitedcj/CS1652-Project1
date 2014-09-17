@@ -79,7 +79,7 @@ int main(int argc, char * argv[]) {
   /* wait till socket can be read. */
   FD_ZERO(&read_fd);
   FD_SET(sd, &read_fd);
-  int rc = select(sd+1, &read_fd, NULL, NULL, &timeout);
+  int rc = select(sd+1, &read_fd, NULL, NULL, NULL);
   
   printf("rc: %i", rc);
   
@@ -103,7 +103,7 @@ int main(int argc, char * argv[]) {
     /* second read loop -- print out the rest of the response: real web content */
 
     /*close socket and deinitialize */
-    shutdown(sock, 0);
+    shutdown(sd, 0);
   
     printf("Closed socket\n");
     fflush(stdout);
