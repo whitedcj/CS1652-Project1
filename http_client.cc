@@ -88,15 +88,30 @@ int main(int argc, char * argv[]) {
     int rc = select(sd+1, &read_fd, NULL, NULL, &timeout);
   
     /* first read loop -- read headers */
-    char bufin[80];
-    int n = read(sd, bufin, 80);
-    while (n>0)
+    //char bufin[80];
+    //int n = read(sd, bufin, 80);
+    //while (n>0)
+    //{
+    	//printf("%s", bufin);
+  	//n = read(sd, bufin, 80);
+    //}
+    
+    char c = fgetc(sd);
+    printf("Starting Headers:\n%c", c)
+    while (c != '\n')
     {
-    	printf("%s", bufin);
-  	n = read(sd, bufin, 80);
+    	c = fgetc(sd);
+    	printf("%c", c);
     }
-  
-    printf("\nDone\n");
+    printf("\nFinished Headers\n\nStarting Body")
+    
+    while (!feof(sd))
+    {
+    	c = fgetc(sd);
+    	printf("%c", c);
+    	
+    }
+    printf("\nFinishedBody\nDone\n");
   
     /* examine return code */
     
@@ -111,6 +126,7 @@ int main(int argc, char * argv[]) {
 
     /*close socket and deinitialize */
     shutdown(sd, 0);
+    free(req);
   
     printf("Closed socket\n");
     fflush(stdout);
