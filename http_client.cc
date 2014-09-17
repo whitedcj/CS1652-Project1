@@ -92,11 +92,7 @@ int main(int argc, char * argv[]) {
     int n = read(sd, header, 12);
     printf("Header: %s\n", header);
     
-    char * code;
-    code = strndup(header+9, 3);
-    printf("Code: %s\n", code);
-    
-    int responseCode = atoi(code);
+    int responseCode = atoi(header+9);
     if(responseCode == 200) //OK
     {
     	printf("200 OK\n");
