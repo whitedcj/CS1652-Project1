@@ -92,9 +92,8 @@ int main(int argc, char * argv[]) {
     int n = read(sd, header, 12);
     printf("Header: %s\n", header);
     
-    char * code = new char[4];
+    char * code = new char[3];
     strncpy(code, header+9, 3);
-    code[4] = '\0';
     printf("Code: %s\n", code);
     
     int responseCode = atoi(code);
