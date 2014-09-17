@@ -91,7 +91,7 @@ int main(int argc, char * argv[]) {
     char header[12];
     int n = read(sd, header, 12);
     char * code = new char[4];
-    memcpy(code, header+10, 3);
+    strncpy(code, header+10, 3);
     code[4] = '\0';
     
     int responseCode = atoi(code);
