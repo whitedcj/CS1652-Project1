@@ -93,7 +93,7 @@ int main(int argc, char * argv[]) {
     printf("Header: %s\n", header);
     
     char * code = new char[4];
-    strncpy(code, header+10, 3);
+    strncpy(code, header+9, 3);
     code[4] = '\0';
     printf("Code: %s\n", code);
     
