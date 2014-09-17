@@ -9,6 +9,7 @@
 #include <sys/types.h>          /* See NOTES */
 #include <sys/socket.h>
 #include <netdb.h>
+#include <unistd.h>
 
 
 #define BUFSIZE 1024
