@@ -76,7 +76,7 @@ int main(int argc, char * argv[]) {
   struct sockaddr_in sa;
   memset(&sa, 0 ,sizeof(sa));
   sa.sin_port = htons(server_port); //1500
-  memcpy(&sa.sin_addr.s_addr, hp->h_addr, hp->length);
+  memcpy(&sa.sin_addr.s_addr, hp->h_addr, hp->h_length);
   sa.sin_family = AF_INET;
   
   /* connect to the server socket */
