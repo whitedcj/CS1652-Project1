@@ -48,20 +48,52 @@ int main(int argc, char * argv[]) {
 	exit(-1);
     }
 
-    /* make socket */
-
-    /* get host IP address  */
-    /* Hint: use gethostbyname() */
-
-    /* set address */
-
-    /* connect to the server socket */
-
-    /* send request message */
-    sprintf(req, "GET %s HTTP/1.0\r\n\r\n", server_path);
-
-    /* wait till socket can be read. */
-    /* Hint: use select(), and ignore timeout for now. */
+   //Parse args
+  //char* server_name = argv[2];
+  //printf("Server: %s\n", server_name);
+  //int server_port = atoi(argv[3]);
+  //printf("Port: %i\n", server_port);
+  //char* server_path = argv[4];
+  //printf("Path: %s\n", server_path);
+  
+  /* make socket */
+  int sock=socket(AF_INET,SOCK_STREAM,0);
+  
+  printf("Socket: %i", sock);
+  fflush(stdout);
+  
+  /* get host IP address  */
+  /* set address */
+  struct sockaddr_in sa;
+  memset(&sa, 0 ,sizeof(sa));
+  sa.sin_port = htons(server_port); //1500
+  sa.sin_addr.s_addr = htonl(gethostbyname(server_name));
+  sa.sin_family = AF_INET;
+  
+  /* connect to the server socket */
+  if ((connect(sock, (struct sockaddr *)&sa, sizeof(sa))<0) {
+    printf("Failed connect\n"); 
+  }
+  
+  printf("Connected\n");
+  fflush(stdout);
+  
+  /* send request message */
+  sprintf(req, "GET %s HTTP/1.0\r\n\r\n", server_path);
+  
+  /* wait till socket can be read. */
+  /* Hint: use select(), and ignore timeout for now. */
+  
+  //Read from server
+  //char * bufout = ”Hello”;
+  //char bufin[80];
+  //write(sock, bufout, strlen(bufout) + 1);
+  //int n = read(sock, bufin, 80);
+  
+  //Close socket
+  
+  
+    
 
     /* first read loop -- read headers */
 
@@ -77,7 +109,10 @@ int main(int argc, char * argv[]) {
     /* second read loop -- print out the rest of the response: real web content */
 
     /*close socket and deinitialize */
-
+    close(sock);
+  
+    printf("Closed socket\n");
+    fflush(stdout);
     if (ok) {
 	return 0;
     } else {
