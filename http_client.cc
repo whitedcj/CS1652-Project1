@@ -79,7 +79,7 @@ int main(int argc, char * argv[]) {
   sprintf(req, "GET %s HTTP/1.0\r\n\r\n", server_path);
   send(sd, req, strlen(req), 0);
   
-  //Set up timeout
+  /* set up timeout */
   timeout.tv_sec = 10;
   timeout.tv_usec = 500000;
   
@@ -88,16 +88,18 @@ int main(int argc, char * argv[]) {
   FD_SET(sd, &read_fd);
   int rc = select(sd+1, &read_fd, NULL, NULL, &timeout);
   
-  printf("rc: %i", rc);
+  /* first read loop -- read headers */
+  char bufin[80];
+  int n = read(sd, bufin, 80);
+  while (n>0)
+  {
+  	printf("Read 80 bytes, %i to go\n", n);
+  	//do stuff with buffer
+  	n = read(sd, bufin, 80);
+  }
   
-  //Read from server
-  //char * bufout = ”Hello”;
-  //char bufin[80];
-  //write(sock, bufout, strlen(bufout) + 1);
-  //int n = read(sock, bufin, 80);
-
-    /* first read loop -- read headers */
-
+  printf("Read a bunch of stuff, here's some: %s", bufin);
+  
     /* examine return code */   
 
     //Skip "HTTP/1.0"
