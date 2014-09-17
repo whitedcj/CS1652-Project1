@@ -20,9 +20,11 @@ int main(int argc, char * argv[]) {
     char * server_path = NULL;
     char * req         = NULL;
     bool ok            = false;
+    
     struct hostent *hp;
     fd_set read_fd;
-
+    struct timeval timeout;
+    
     /*parse args */
     if (argc != 5) {
 	fprintf(stderr, "usage: http_client k|u server port path\n");
@@ -76,10 +78,14 @@ int main(int argc, char * argv[]) {
   /* send request message */
   sprintf(req, "GET %s HTTP/1.0\r\n\r\n", server_path);
   
+  //Set up timeout
+  timeout.tv_sec = 10;
+  timeout.tv_usec = 500000;
+  
   /* wait till socket can be read. */
   FD_ZERO(&read_fd);
   FD_SET(sd, &read_fd);
-  int rc = select(sd+1, &read_fd, NULL, NULL, NULL);
+  int rc = select(sd+1, &read_fd, NULL, NULL, &timeout);
   
   printf("rc: %i", rc);
   
