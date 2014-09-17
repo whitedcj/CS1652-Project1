@@ -12,7 +12,5 @@ server2: http_server2.cc
 server3: http_server3.cc
 	c++ -o http_server3 http_server3.cc
 
-
 clean: 
 	rm -f *.o http_client http_server1 http_server2 http_server3
-
