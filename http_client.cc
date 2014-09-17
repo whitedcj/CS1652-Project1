@@ -11,11 +11,9 @@
 #include <netdb.h>
 #include <unistd.h>
 
-
 #define BUFSIZE 1024
 
 int main(int argc, char * argv[]) {
-
     char * server_name = NULL;
     int server_port    = -1;
     char * server_path = NULL;
@@ -53,55 +51,55 @@ int main(int argc, char * argv[]) {
 	exit(-1);
     }
   
-  /* make socket */
-  int sd=socket(AF_INET,SOCK_STREAM,0);
+    /* make socket */
+    int sd=socket(AF_INET,SOCK_STREAM,0);
   
-  /* get host IP address  */
-  if ((hp = gethostbyname(server_name)) == NULL) {
-    printf("Could not find host %s\n", server_name);
-  }
+    /* get host IP address  */
+    if ((hp = gethostbyname(server_name)) == NULL) {
+      printf("Could not find host %s\n", server_name);
+    }
   
-  /* set address */
-  struct sockaddr_in sa;
-  memset(&sa, 0 ,sizeof(sa));
-  sa.sin_port = htons(server_port); //1500
-  memcpy(&sa.sin_addr.s_addr, hp->h_addr, hp->h_length);
-  sa.sin_family = AF_INET;
+    /* set address */
+    struct sockaddr_in sa;
+    memset(&sa, 0 ,sizeof(sa));
+    sa.sin_port = htons(server_port); //1500
+    memcpy(&sa.sin_addr.s_addr, hp->h_addr, hp->h_length);
+    sa.sin_family = AF_INET;
   
-  /* connect to the server socket */
-  if (connect(sd, (struct sockaddr *)&sa, sizeof(sa))<0) {
-    printf("Failed connect\n"); 
-  }
+    /* connect to the server socket */
+    if (connect(sd, (struct sockaddr *)&sa, sizeof(sa))<0) {
+      printf("Failed connect\n"); 
+    }
   
-  printf("Connected\n");
-  fflush(stdout);
+    printf("Connected\n");
+    fflush(stdout);
   
-  /* send request message */
-  sprintf(req, "GET %s HTTP/1.0\r\n\r\n", server_path);
-  send(sd, req, strlen(req), 0);
+    /* send request message */
+    sprintf(req, "GET %s HTTP/1.0\r\n\r\n", server_path);
+    send(sd, req, strlen(req), 0);
   
-  /* set up timeout */
-  timeout.tv_sec = 10;
-  timeout.tv_usec = 500000;
+    /* set up timeout */
+    timeout.tv_sec = 10;
+    timeout.tv_usec = 500000;
   
-  /* wait till socket can be read. */
-  FD_ZERO(&read_fd);
-  FD_SET(sd, &read_fd);
-  int rc = select(sd+1, &read_fd, NULL, NULL, &timeout);
+    /* wait till socket can be read. */
+    FD_ZERO(&read_fd);
+    FD_SET(sd, &read_fd);
+    int rc = select(sd+1, &read_fd, NULL, NULL, &timeout);
   
-  /* first read loop -- read headers */
-  char bufin[80];
-  int n = read(sd, bufin, 80);
-  while (n>0)
-  {
-  	printf("Read 80 bytes, %i to go\n", n);
-  	//do stuff with buffer
+    /* first read loop -- read headers */
+    char bufin[80];
+    int n = read(sd, bufin, 80);
+    while (n>0)
+    {
+    	printf("%s", bufin);
   	n = read(sd, bufin, 80);
-  }
+    }
   
-  printf("Read a bunch of stuff, here's some: %s", bufin);
+    printf("\nDone\n");
   
-    /* examine return code */   
+    /* examine return code */
+    
     //Skip "HTTP/1.0"
     //remove the '\0'
 
