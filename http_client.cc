@@ -101,7 +101,6 @@ int main(int argc, char * argv[]) {
   printf("Read a bunch of stuff, here's some: %s", bufin);
   
     /* examine return code */   
-
     //Skip "HTTP/1.0"
     //remove the '\0'
 
