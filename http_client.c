@@ -29,7 +29,9 @@ int main (int argc, const char* argv[])
   sa.sin_addr.s_addr = htonl(gethostbyname(server_name));
   sa.sin_family = AF_INET;
   
-  connect(sock, (struct sockaddr *)&sa, sizeof(sa));
+  if ((connect(sock, (struct sockaddr *)&sa, sizeof(sa))<0) {
+    printf("failed connect"); 
+  }
   
   printf("Connected\n");
   fflush(stdout);
