@@ -91,7 +91,7 @@ int main(int argc, char * argv[]) {
     char header[12];
     int n = read(sd, header, 12);
     char * code = new char[3];
-    memcpy(code, header[10], 3);
+    memcpy(code, header+10, 3);
     
     int responseCode = atoi(code);
     if(responseCode == 200) //OK
@@ -100,7 +100,7 @@ int main(int argc, char * argv[]) {
     }
     else
     {
-    	print("%i\n", responseCode);
+    	printf("%i\n", responseCode);
     }
 
     /* print first part of response: header, error code, etc. */
