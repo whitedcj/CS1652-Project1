@@ -1,7 +1,7 @@
 ALL: client server1 server2 server3
 
 client: http_client.cc
-	c++ -o http_client http_client.cc
+	c++ -o http_client http_client.cc -lnsl -lsocket
 
 server1: http_server1.cc
 	c++ -o http_server1 http_server1.cc
