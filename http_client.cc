@@ -90,7 +90,6 @@ int main(int argc, char * argv[]) {
     /* check response header code */
     char header[12];
     int n = read(sd, header, 12);
-    printf("Header: %s\n", header);
     
     int responseCode = atoi(header+9);
     if(responseCode == 200) //OK
@@ -99,7 +98,7 @@ int main(int argc, char * argv[]) {
     }
     else
     {
-    	printf("%i\n", responseCode);
+    	
     }
 
     /* print first part of response: header, error code, etc. */
