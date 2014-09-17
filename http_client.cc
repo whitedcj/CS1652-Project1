@@ -27,14 +27,10 @@ int main(int argc, char * argv[]) {
 	fprintf(stderr, "usage: http_client k|u server port path\n");
 	exit(-1);
     }
-    
-    printf("Parsing args");
 
     server_name = argv[2];
     server_port = atoi(argv[3]);
     server_path = argv[4];
-    
-    printf("Parsed args");
 
     req = (char *)malloc(strlen("GET  HTTP/1.0\r\n\r\n") 
 			 + strlen(server_path) + 1);  
@@ -55,9 +51,6 @@ int main(int argc, char * argv[]) {
   
   /* make socket */
   int sock=socket(AF_INET,SOCK_STREAM,0);
-  
-  printf("Socket: %i", sock);
-  fflush(stdout);
   
   /* get host IP address  */
   if ((hp = gethostbyname(server_name)) == NULL) {
@@ -90,11 +83,6 @@ int main(int argc, char * argv[]) {
   //char bufin[80];
   //write(sock, bufout, strlen(bufout) + 1);
   //int n = read(sock, bufin, 80);
-  
-  //Close socket
-  
-  
-    
 
     /* first read loop -- read headers */
 
