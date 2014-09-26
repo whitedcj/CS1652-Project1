@@ -147,7 +147,7 @@ int main(int argc, char * argv[])
     			printf("%c", c[0]);
     	} while(res > 0);
     }
-    fflush(stdout);
+    fflush(stderr);
     printf("\nFinished content\n");
 
     /*close socket and deinitialize */
