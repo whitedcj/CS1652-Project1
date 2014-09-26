@@ -103,9 +103,10 @@ int main(int argc, char * argv[]) {
     	/* print first part of response: header, error code, etc. */
     	printf("%s", header);
     	char c[1];
+    	int res;
     	do
     	{
-    		int res = read(sd, c, 1);
+    		res = read(sd, c, 1);
     		printf("%c", c[0]);
     		//printf("Read character: %c\nReturned: %i\n\n", *c, res);
     		/* check for end of header \r\n\r\n */ 
