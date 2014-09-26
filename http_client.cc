@@ -51,7 +51,7 @@ int main(int argc, char * argv[])
     }
   
     /* make socket */
-    int sd=socket(PF_INET,SOCK_STREAM,0);
+    int sd=minet_socket(SOCK_STREAM);
   
     /* get host IP address  */
     if ((hp = gethostbyname(server_name)) == NULL) 
@@ -68,7 +68,7 @@ int main(int argc, char * argv[])
     sa.sin_family = AF_INET;
   
     /* connect to the server socket */
-    if (connect(sd, (struct sockaddr *)&sa, sizeof(sa))<0)
+    if (minet_connect(sd, (struct sockaddr_in *)&sa)<0)
     {
 	fprintf(stderr, "Failed connect\n");
 	exit(-1);
@@ -76,7 +76,7 @@ int main(int argc, char * argv[])
   
     /* send request message */
     sprintf(req, "GET %s%s HTTP/1.0\r\n\r\n", server_path[0] == '/' ? " " : " /", server_path);
-    send(sd, req, strlen(req), 0);
+    minet_write(sd, req, strlen(req));
   
     /* set up timeout */
     timeout.tv_sec = 10;
@@ -85,7 +85,7 @@ int main(int argc, char * argv[])
     /* wait till socket can be read. */
     FD_ZERO(&read_fd);
     FD_SET(sd, &read_fd);
-    if(select(sd+1, &read_fd, NULL, NULL, &timeout) == -1)
+    if(minet_select(sd+1, &read_fd, NULL, NULL, &timeout) == -1)
     {
 	fprintf(stderr, "Failed connect\n"); 
 	exit(-1);
@@ -93,7 +93,7 @@ int main(int argc, char * argv[])
   
     /* check response header code */
     char header[12];
-    if(read(sd, header, 12) <= 0)
+    if(minet_read(sd, header, 12) <= 0)
     {
     	fprintf(stderr, "Failed to read header\n");
 	exit(-1);
@@ -113,7 +113,7 @@ int main(int argc, char * argv[])
     		/* check for end of header \r\n\r\n */ 
     		if(*c == '\r')
     		{
-    			if(read(sd, block, 3) < 0)
+    			if(minet_read(sd, block, 3) < 0)
     			{
     				fprintf(stderr, "Could not read block in header\n");
 				exit(-1);
@@ -131,7 +131,7 @@ int main(int argc, char * argv[])
     	/* print out the rest of the response: real web content */
     	do
     	{
-    		res = read(sd, c, 1);
+    		res = minet_read(sd, c, 1);
     		if(res > 0)
     			printf("%c", c[0]);
     	} while(res > 0);
@@ -142,7 +142,7 @@ int main(int argc, char * argv[])
     	printf("%s", header);
     	do
     	{
-    		res = read(sd, c, 1);
+    		res = minet_read(sd, c, 1);
     		if(res > 0)
     			printf("%c", c[0]);
     	} while(res > 0);
@@ -151,7 +151,7 @@ int main(int argc, char * argv[])
     printf("\nFinished content\n");
 
     /*close socket and deinitialize */
-    shutdown(sd, 0);
+    minet_close(sd);
     printf("Shutdown\n");
     free(req);
     printf("Free'd req\n");
