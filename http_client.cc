@@ -105,12 +105,13 @@ int main(int argc, char * argv[]) {
     	do
     	{
     		int res = read(sd, c, 1);
-    		printf("Read character: %c\nReturned: %i\n\n", *c, res);
+    		printf("%c", c);
+    		//printf("Read character: %c\nReturned: %i\n\n", *c, res);
     		/* check for end of header \r\n\r\n */ 
-    		if(*c == '\r')
-    		{
-    			printf("Possible end of header\n");
-    		}
+    		//if(*c == '\r')
+    		//{
+    			//printf("Possible end of header\n");
+    		//}
     	} while(read(sd, c, 1) > 0);
     }
 
