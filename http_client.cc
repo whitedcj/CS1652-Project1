@@ -95,44 +95,39 @@ int main(int argc, char * argv[]) {
     /* read socket */
     int res;
     char c[1], block[4];
-    if(responseCode == 200) //OK
-    {
-    	/* read header*/
-    	do
-    	{
-    		res = read(sd, c, 1);
-    		
-    		/* check for end of header \r\n\r\n */ 
-    		if(*c == '\r')
-    		{
-    			if(read(sd, block, 3) < 0)
-    				printf("Failed to read block\n");
-    			block[3] = '\0';
-    				
-    			if(strcmp(block, "\n\r\n") == 0)
-    			{
-    				break;
-    			}
-    		}
-    	} while(res > 0);
-    	
-    	/* second read loop -- print out the rest of the response: real web content */
-    	do
-    	{
-    		res = read(sd, c, 1);
-    		printf("%c", c[0]);
-    	} while(res > 0);
-    }
-    else
-    {
-    	/* print first part of response: header, error code, etc. */
+    int showHeader = 1;
+    
+    if(responseCode != 200)
     	printf("%s", header);
-    	do
+    
+    /* read header*/
+    do
+    {
+	res = read(sd, c, 1);
+    	
+    	/* check for end of header \r\n\r\n */ 
+    	if(*c == '\r')
     	{
-    		res = read(sd, c, 1);
+    		if(read(sd, block, 3) < 0)
+    			printf("Failed to read block\n");
+    		block[3] = '\0';
+    			
+    		if(strcmp(block, "\n\r\n") == 0)
+    		{
+    			break;
+    		}
+    	}
+    	
+    	/* print character read if response was anything other than 200 OK */
+	if(responseCode != 200) //OK
     		printf("%c", c[0]);
-    	} while(res > 0);
-    }
+    } while(res > 0);
+    /* second read loop -- print out content */
+    do
+    {
+    	res = read(sd, c, 1);
+    	printf("%c", c[0]);
+    } while(res > 0);
 
     /*close socket and deinitialize */
     shutdown(sd, 0);
