@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <sys/select.h>
 #include <unistd.h>
+#include "minet_socket.h"
 
 #define BUFSIZE 1024
 #define BACKLOG 15
@@ -33,7 +34,7 @@ int handle_connection(int sock) {
 	"</body></html>\n";
     
     /* first read loop -- get request and headers*/
-    n = read(sock, read_buf, BUFSIZE);
+    n = minet_read(sock, read_buf, BUFSIZE);
     /* parse request to get file name */
     printf("n is %d\n", n);
     j = 0;
@@ -43,7 +44,13 @@ int handle_connection(int sock) {
         if (read_buf[i] != ' ' && start_fname != 0) {
             j++;
         } else if (read_buf[i] == ' ' && start_fname == 0) {
-            start_fname = i+1;
+       		if (read_buf[i+1] == 47) {
+                start_fname = i+2;
+                i++;
+                printf("i is %d, buf i is %c and start_fname is %d and j is %d\n", i, read_buf[i], start_fname, j);
+            } else {
+                start_fname = i+1;    
+            }
         } else if (read_buf[i] == ' ' && start_fname != 0) {
             break;
         } else {
@@ -80,7 +87,7 @@ int handle_connection(int sock) {
         amount = 0;
         n = 0;
         while (amount < strlen(write_buf)) {
-            n = send(sock, write_buf + amount, strlen(write_buf) - amount, 0);
+            n = minet_write(sock, write_buf + amount, strlen(write_buf) - amount);
             if(n < 0) {
                 perror("Send failed");
                 exit ( EXIT_FAILURE );
@@ -116,7 +123,7 @@ int handle_connection(int sock) {
         amount = 0;
         n = 0;
         while (amount < strlen(write_buf)) {
-            n = send(sock, write_buf + amount, strlen(write_buf) - amount, 0);
+            n = minet_write(sock, write_buf + amount, strlen(write_buf) - amount);
             if(n < 0) {
                 perror("Send failed");
                 exit ( EXIT_FAILURE );
@@ -141,7 +148,7 @@ int handle_connection(int sock) {
 
 int main (int argc, char** argv) {
 
-	int sfd, connfd, amt = 0;
+	int init_sock, conn_sock, amt = 0;
 	int read_list[BACKLOG];
 	int size_of_list = 0;
 	int port, stack_type;
@@ -164,11 +171,11 @@ int main (int argc, char** argv) {
 		printf("Usage: http_server1 k|u port\n");
 		exit(0);
 	}
-
+	minet_init(MINET_KERNEL);
 	stack_type = atoi(argv[1]);
 	port = atoi(argv[2]);
 	
-	if ((sfd = socket(PF_INET, SOCK_STREAM, 0)) < 0) {
+	if ((init_sock = minet_socket(SOCK_STREAM)) < 0) {
 		perror("Socket failed");
 		//find out what this means below
 		exit ( EXIT_FAILURE );
@@ -179,16 +186,16 @@ int main (int argc, char** argv) {
 	addr.sin_port = htons(port);
 	addr.sin_addr.s_addr = INADDR_ANY ;
 	
-	if(bind(sfd, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
+	if(minet_bind(init_sock, (struct sockaddr_in *)&addr) < 0) {
 		perror("Bind failed");
 		exit( EXIT_FAILURE );
 	}
 	
-	if(listen(sfd , BACKLOG) < 0) {
+	if(minet_listen(init_sock , 10) < 0) {
 		perror("Listen failed");
 		exit( EXIT_FAILURE );
 	}
-	read_list[size_of_list++] = sfd;
+	read_list[size_of_list++] = init_sock;
 	//socket, address of client, size of address
 	while(1 == 1) {
   		
@@ -206,7 +213,7 @@ int main (int argc, char** argv) {
 		tv.tv_sec = 5;
 		tv.tv_usec = 0;
 
-		ret = select(max + 1, &rfds, NULL, NULL, &tv);
+		ret = minet_select(max + 1, &rfds, NULL, NULL, &tv);
 		if (ret == -1) {
 			printf("select returned -1");
 		} else if (ret == 0) {
@@ -216,12 +223,12 @@ int main (int argc, char** argv) {
 			for (i = 0; i < size_of_list; i++) {
 				if (FD_ISSET(read_list[i], &rfds) != 0) {
 					printf("selected one is %d\n", read_list[i]);
-					if (read_list[i] == sfd) {
-						if((connfd = accept(sfd, (struct sockaddr *)&client_addr, &con_size)) < 0) {
+					if (read_list[i] == init_sock) {
+						if((conn_sock = minet_accept(init_sock, (struct sockaddr_in *)&client_addr)) < 0) {
 							perror("Accept failed");
 							exit( EXIT_FAILURE );
 						} else {
-							read_list[size_of_list++] = connfd;
+							read_list[size_of_list++] = conn_sock;
 						}
 					} else {
 						n = handle_connection(read_list[i]);				
@@ -235,7 +242,7 @@ int main (int argc, char** argv) {
 		}
 	}
 
-	close(sfd);
+	minet_close(init_sock);
 	
 	return 0;
 }
