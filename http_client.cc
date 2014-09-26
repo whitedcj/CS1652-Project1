@@ -101,16 +101,16 @@ int main(int argc, char * argv[]) {
     {
     	/* print first part of response: header, error code, etc. */
     	printf("%s", header);
-    	char c;
+    	char *c;
     	while(read(sd, c, 1) != 0)
     	{
     		/* check for end of header \r\n\r\n */ 
-    		if(c == '\r')
+    		if(*c == '\r')
     		{
     			printf("Possible end of header\n");
     		}
     		
-    		printf("%c", c);
+    		printf("%c", *c);
     	}
     }
 
