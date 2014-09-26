@@ -107,8 +107,8 @@ int main(int argc, char * argv[]) {
     		//if(*c == '\r')
     		//{
     			//printf("Possible end of header\n");
-    		//}
-    	} while(res > 0);*/
+    		//}*/
+    	//} while(res > 0);
     	
     	/* second read loop -- print out the rest of the response: real web content */
     	do
