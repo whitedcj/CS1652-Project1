@@ -95,7 +95,6 @@ int main(int argc, char * argv[]) {
     /* read socket */
     int res;
     char c[1], block[4];
-    int showHeader = 1;
     
     if(responseCode != 200)
     	printf("%s", header);
