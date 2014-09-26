@@ -95,15 +95,25 @@ int main(int argc, char * argv[]) {
     if(responseCode == 200) //OK
     {
     	printf("200 OK\n");
+    	/* second read loop -- print out the rest of the response: real web content */
     }
     else
     {
-    	
+    	/* print first part of response: header, error code, etc. */
+    	printf("%s", header);
+    	while(read(sd, c, 1) != 0)
+    	{
+    		/* check for end of header \r\n\r\n */ 
+    		if(c == '\r')
+    		{
+    			printf("Possible end of header\n");
+    		}
+    		
+    		printf("%c", c);
+    	}
     }
 
-    /* print first part of response: header, error code, etc. */
 
-    /* second read loop -- print out the rest of the response: real web content */
 
     /*close socket and deinitialize */
     shutdown(sd, 0);
