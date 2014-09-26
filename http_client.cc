@@ -101,7 +101,7 @@ int main(int argc, char * argv[]) {
     {
     	/* print first part of response: header, error code, etc. */
     	printf("%s", header);
-    	char *c;
+    	char c[1];
     	do
     	{
     		int res = read(sd, c, 1);
