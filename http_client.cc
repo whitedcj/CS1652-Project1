@@ -75,7 +75,7 @@ int main(int argc, char * argv[])
     }
   
     /* send request message */
-    sprintf(req, "GET /%s HTTP/1.0\r\n\r\n", server_path);
+    sprintf(req, "GET %c%s HTTP/1.0\r\n\r\n", server_path[0] == '/' ? '' : '/', server_path);
     send(sd, req, strlen(req), 0);
   
     /* set up timeout */
