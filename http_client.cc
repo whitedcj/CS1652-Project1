@@ -97,7 +97,7 @@ int main(int argc, char * argv[]) {
     char c[1], block[4];
     if(responseCode == 200) //OK
     {
-    	/* read header to find content length */
+    	/* read header*/
     	do
     	{
     		res = read(sd, c, 1);
@@ -111,11 +111,7 @@ int main(int argc, char * argv[]) {
     				
     			if(strcmp(block, "\n\r\n") == 0)
     			{
-    				printf("End of Header\n");
-    			}
-    			else
-    			{
-    				printf("Not the end of header, just %s", block);
+    				break;
     			}
     		}
     	} while(res > 0);
