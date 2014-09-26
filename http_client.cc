@@ -90,6 +90,7 @@ int main(int argc, char * argv[]) {
     /* check response header code */
     char header[12];
     int n = read(sd, header, 12);
+    printf("%d is n\n", n);
     
     int responseCode = atoi(header+9);
     if(responseCode == 200) //OK
@@ -112,7 +113,7 @@ int main(int argc, char * argv[]) {
     		//{
     			//printf("Possible end of header\n");
     		//}
-    	} while(read(sd, c, 1) > 0);
+    	} while(res > 0);
     }
 
     /*close socket and deinitialize */
