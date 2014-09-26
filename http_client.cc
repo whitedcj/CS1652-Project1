@@ -101,21 +101,18 @@ int main(int argc, char * argv[]) {
     {
     	/* print first part of response: header, error code, etc. */
     	printf("%s", header);
-    	char *c;
-    	while(read(sd, c, 1) > 0)
+    	char *cd;
+    	do
     	{
-    		printf("Read character: %c\n", *c);
+    		int res = read(sd, c, 1);
+    		printf("Read character: %c\nReturned: %i\n\n", *c, res);
     		/* check for end of header \r\n\r\n */ 
     		if(*c == '\r')
     		{
     			printf("Possible end of header\n");
     		}
-    		
-    		printf("%c", *c);
-    	}
+    	} while(read(sd, c, 1) > 0)
     }
-
-
 
     /*close socket and deinitialize */
     shutdown(sd, 0);
