@@ -111,7 +111,7 @@ int main(int argc, char * argv[]) {
     		{
     			printf("Possible end of header\n");
     		}
-    	} while(read(sd, c, 1) > 0)
+    	} while(read(sd, c, 1) > 0);
     }
 
     /*close socket and deinitialize */
