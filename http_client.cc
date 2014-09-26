@@ -105,7 +105,7 @@ int main(int argc, char * argv[]) {
     	do
     	{
     		int res = read(sd, c, 1);
-    		printf("%c", c);
+    		printf("%c", c[0]);
     		//printf("Read character: %c\nReturned: %i\n\n", *c, res);
     		/* check for end of header \r\n\r\n */ 
     		//if(*c == '\r')
