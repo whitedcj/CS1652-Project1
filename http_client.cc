@@ -93,23 +93,31 @@ int main(int argc, char * argv[]) {
     int responseCode = atoi(header+9);
     
     /* read socket */
-    char c[1];
     int res;
+    char c[1], block[3];
     if(responseCode == 200) //OK
     {
     	/* read header to find content length */
-    	printf("200 OK\n");
-    	/*do
+    	do
     	{
     		res = read(sd, c, 1);
-    		printf("%c", c[0]);
     		
     		/* check for end of header \r\n\r\n */ 
-    		//if(*c == '\r')
-    		//{
-    			//printf("Possible end of header\n");
-    		//}*/
-    	//} while(res > 0);
+    		if(*c == '\r')
+    		{
+    			if(read(sd, block, 3) < 0)
+    				printf("Failed to read block\n");
+    				
+    			if(strcmp(block, "\n\r\n") == 0)
+    			{
+    				printf("End of Header\n");
+    			}
+    			else
+    			{
+    				printf("Not the end of header, just %s", block);
+    			}
+    		}
+    	} while(res > 0);
     	
     	/* second read loop -- print out the rest of the response: real web content */
     	do
