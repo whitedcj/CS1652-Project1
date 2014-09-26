@@ -150,7 +150,6 @@ int main(int argc, char * argv[])
 
     /*close socket and deinitialize */
     minet_close(sd);
-    free(req);
     if (ok) {
 	return 0;
     } else {
