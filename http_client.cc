@@ -51,7 +51,7 @@ int main(int argc, char * argv[])
     }
   
     /* make socket */
-    int sd=socket(AF_INET,SOCK_STREAM,0);
+    int sd=socket(PF_INET,SOCK_STREAM,0);
   
     /* get host IP address  */
     if ((hp = gethostbyname(server_name)) == NULL) 
