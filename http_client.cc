@@ -25,7 +25,8 @@ int main(int argc, char * argv[]) {
     struct timeval timeout;
     
     /*parse args */
-    if (argc != 5) {
+    if (argc != 5)
+    {
 	fprintf(stderr, "usage: http_client k|u server port path\n");
 	exit(-1);
     }
@@ -38,15 +39,18 @@ int main(int argc, char * argv[]) {
 			 + strlen(server_path) + 1);  
 
     /* initialize */
-    if (toupper(*(argv[1])) == 'K') { 
+    if (toupper(*(argv[1])) == 'K')
+    { 
 	/* UNCOMMENT FOR MINET 
 	 * minet_init(MINET_KERNEL);
          */
-    } else if (toupper(*(argv[1])) == 'U') { 
+    } else if (toupper(*(argv[1])) == 'U')
+    { 
 	/* UNCOMMENT FOR MINET 
 	 * minet_init(MINET_USER);
 	 */
-    } else {
+    } else
+    {
 	fprintf(stderr, "First argument must be k or u\n");
 	exit(-1);
     }
@@ -55,8 +59,9 @@ int main(int argc, char * argv[]) {
     int sd=socket(AF_INET,SOCK_STREAM,0);
   
     /* get host IP address  */
-    if ((hp = gethostbyname(server_name)) == NULL) {
-      printf("Could not find host %s\n", server_name);
+    if ((hp = gethostbyname(server_name)) == NULL) 
+    {
+	fprintf(stderr, "Could not find host %s\n", server_name);
     }
   
     /* set address */
@@ -67,12 +72,10 @@ int main(int argc, char * argv[]) {
     sa.sin_family = AF_INET;
   
     /* connect to the server socket */
-    if (connect(sd, (struct sockaddr *)&sa, sizeof(sa))<0) {
-      printf("Failed connect\n"); 
+    if (connect(sd, (struct sockaddr *)&sa, sizeof(sa))<0)
+    {
+	fprint(stderr, "Failed connect\n"); 
     }
-  
-    printf("Connected\n");
-    fflush(stdout);
   
     /* send request message */
     sprintf(req, "GET /%s HTTP/1.0\r\n\r\n", server_path);
@@ -106,7 +109,11 @@ int main(int argc, char * argv[]) {
     		if(*c == '\r')
     		{
     			if(read(sd, block, 3) < 0)
-    				printf("Failed to read block\n");
+    			{
+    				fprint(stderr, "Could not read block in header\n");
+    				return -1;
+    			}
+    			
     			block[3] = '\0';
     				
     			if(strcmp(block, "\n\r\n") == 0)
@@ -116,7 +123,7 @@ int main(int argc, char * argv[]) {
     		}
     	} while(res > 0);
     	
-    	/* second read loop -- print out the rest of the response: real web content */
+    	/* print out the rest of the response: real web content */
     	do
     	{
     		res = read(sd, c, 1);
@@ -125,7 +132,7 @@ int main(int argc, char * argv[]) {
     }
     else
     {
-    	/* print first part of response: header, error code, etc. */
+    	/* print header and response data */
     	printf("%s", header);
     	do
     	{
@@ -138,7 +145,6 @@ int main(int argc, char * argv[]) {
     shutdown(sd, 0);
     free(req);
   
-    printf("Closed socket\n");
     fflush(stdout);
     if (ok) {
 	return 0;
