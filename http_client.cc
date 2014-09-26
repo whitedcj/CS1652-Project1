@@ -74,7 +74,7 @@ int main(int argc, char * argv[]) {
     /* connect to the server socket */
     if (connect(sd, (struct sockaddr *)&sa, sizeof(sa))<0)
     {
-	fprint(stderr, "Failed connect\n"); 
+	fprintf(stderr, "Failed connect\n"); 
     }
   
     /* send request message */
