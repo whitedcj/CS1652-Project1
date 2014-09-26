@@ -94,7 +94,7 @@ int main(int argc, char * argv[]) {
     
     /* read socket */
     int res;
-    char c[1], block[3];
+    char c[1], block[4];
     if(responseCode == 200) //OK
     {
     	/* read header to find content length */
@@ -107,8 +107,9 @@ int main(int argc, char * argv[]) {
     		{
     			if(read(sd, block, 3) < 0)
     				printf("Failed to read block\n");
+    			block[3] = '\0';
     				
-    			if(strcmp(block, "\n\r\n") == 0)
+    			if(strcmp(block, "\n\r\n\0") == 0)
     			{
     				printf("End of Header\n");
     			}
