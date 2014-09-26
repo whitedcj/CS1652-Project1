@@ -109,7 +109,7 @@ int main(int argc, char * argv[]) {
     				printf("Failed to read block\n");
     			block[3] = '\0';
     				
-    			if(strcmp(block, "\n\r\n\0") == 0)
+    			if(strcmp(block, "\n\r\n") == 0)
     			{
     				printf("End of Header\n");
     			}
