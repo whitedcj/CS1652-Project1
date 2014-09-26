@@ -1,19 +1,18 @@
-/* UNCOMMENT FOR MINET 
- * #include "minet_socket.h"
- */
+#include "minet_socket.h"
 
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include <sys/types.h>          /* See NOTES */
+#include <sys/types.h>
 #include <sys/socket.h>
 #include <netdb.h>
 #include <unistd.h>
 
 #define BUFSIZE 1024
 
-int main(int argc, char * argv[]) {
+int main(int argc, char * argv[])
+{
     char * server_name = NULL;
     int server_port    = -1;
     char * server_path = NULL;
@@ -40,15 +39,11 @@ int main(int argc, char * argv[]) {
 
     /* initialize */
     if (toupper(*(argv[1])) == 'K')
-    { 
-	/* UNCOMMENT FOR MINET 
-	 * minet_init(MINET_KERNEL);
-         */
+    {
+	minet_init(MINET_KERNEL);
     } else if (toupper(*(argv[1])) == 'U')
     { 
-	/* UNCOMMENT FOR MINET 
-	 * minet_init(MINET_USER);
-	 */
+	minet_init(MINET_USER);
     } else
     {
 	fprintf(stderr, "First argument must be k or u\n");
