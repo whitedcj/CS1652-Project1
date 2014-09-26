@@ -147,16 +147,10 @@ int main(int argc, char * argv[])
     			printf("%c", c[0]);
     	} while(res > 0);
     }
-    fflush(stderr);
-    printf("\nFinished content\n");
 
     /*close socket and deinitialize */
     minet_close(sd);
-    printf("Shutdown\n");
     free(req);
-    printf("Free'd req\n");
-  
-    fflush(stdout);
     if (ok) {
 	return 0;
     } else {
