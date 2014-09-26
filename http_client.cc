@@ -110,7 +110,7 @@ int main(int argc, char * argv[]) {
     		{
     			if(read(sd, block, 3) < 0)
     			{
-    				fprint(stderr, "Could not read block in header\n");
+    				fprintf(stderr, "Could not read block in header\n");
     				return -1;
     			}
     			
