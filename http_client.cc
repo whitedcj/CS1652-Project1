@@ -142,7 +142,6 @@ int main(int argc, char * argv[])
     shutdown(sd, 0);
     free(req);
   
-    fflush(stdout);
     if (ok) {
 	return 0;
     } else {
