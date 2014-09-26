@@ -104,6 +104,7 @@ int main(int argc, char * argv[]) {
     	char *c;
     	while(read(sd, c, 1) > 0)
     	{
+    		printf("Read character: %c\n", *c);
     		/* check for end of header \r\n\r\n */ 
     		if(*c == '\r')
     		{
