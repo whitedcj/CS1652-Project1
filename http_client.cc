@@ -122,7 +122,8 @@ int main(int argc, char * argv[])
     	do
     	{
     		res = read(sd, c, 1);
-    		printf("%c", c[0]);
+    		if(res > 0)
+    			printf("%c", c[0]);
     	} while(res > 0);
     }
     else
@@ -132,7 +133,8 @@ int main(int argc, char * argv[])
     	do
     	{
     		res = read(sd, c, 1);
-    		printf("%c", c[0]);
+    		if(res > 0)
+    			printf("%c", c[0]);
     	} while(res > 0);
     }
 
