@@ -92,18 +92,36 @@ int main(int argc, char * argv[]) {
     int n = read(sd, header, 12);
     printf("%d is n\n", n);
     
+    int res;
     int responseCode = atoi(header+9);
     if(responseCode == 200) //OK
     {
+    	/* read header to find content length */
     	printf("200 OK\n");
+    	/*do
+    	{
+    		res = read(sd, c, 1);
+    		printf("%c", c[0]);
+    		
+    		/* check for end of header \r\n\r\n */ 
+    		//if(*c == '\r')
+    		//{
+    			//printf("Possible end of header\n");
+    		//}
+    	} while(res > 0);*/
+    	
     	/* second read loop -- print out the rest of the response: real web content */
+    	do
+    	{
+    		res = read(sd, c, 1);
+    		printf("%c", c[0]);
+    	} while(res > 0);
     }
     else
     {
     	/* print first part of response: header, error code, etc. */
     	printf("%s", header);
     	char c[1];
-    	int res;
     	do
     	{
     		res = read(sd, c, 1);
