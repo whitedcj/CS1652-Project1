@@ -90,10 +90,11 @@ int main(int argc, char * argv[]) {
     /* check response header code */
     char header[12];
     int n = read(sd, header, 12);
-    printf("%d is n\n", n);
-    
-    int res;
     int responseCode = atoi(header+9);
+    
+    /* read socket */
+    char c[1];
+    int res;
     if(responseCode == 200) //OK
     {
     	/* read header to find content length */
@@ -121,7 +122,6 @@ int main(int argc, char * argv[]) {
     {
     	/* print first part of response: header, error code, etc. */
     	printf("%s", header);
-    	char c[1];
     	do
     	{
     		res = read(sd, c, 1);
