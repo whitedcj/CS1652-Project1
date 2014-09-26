@@ -1,19 +1,18 @@
-/* UNCOMMENT FOR MINET 
- * #include "minet_socket.h"
- */
+#include "minet_socket.h"
 
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include <sys/types.h>          /* See NOTES */
+#include <sys/types.h>
 #include <sys/socket.h>
 #include <netdb.h>
 #include <unistd.h>
 
 #define BUFSIZE 1024
 
-int main(int argc, char * argv[]) {
+int main(int argc, char * argv[])
+{
     char * server_name = NULL;
     int server_port    = -1;
     char * server_path = NULL;
@@ -36,32 +35,29 @@ int main(int argc, char * argv[]) {
     server_path = argv[4];
 
     req = (char *)malloc(strlen("GET  HTTP/1.0\r\n\r\n") 
-			 + strlen(server_path) + 1);  
+			 + strlen(server_path) + 2);  
 
     /* initialize */
     if (toupper(*(argv[1])) == 'K')
-    { 
-	/* UNCOMMENT FOR MINET 
-	 * minet_init(MINET_KERNEL);
-         */
+    {
+	minet_init(MINET_KERNEL);
     } else if (toupper(*(argv[1])) == 'U')
     { 
-	/* UNCOMMENT FOR MINET 
-	 * minet_init(MINET_USER);
-	 */
+	minet_init(MINET_USER);
     } else
     {
 	fprintf(stderr, "First argument must be k or u\n");
 	exit(-1);
     }
   
-    /* make socket */
-    int sd=socket(AF_INET,SOCK_STREAM,0);
+    /* make tcp socket */
+    int sd=minet_socket(SOCK_STREAM);
   
     /* get host IP address  */
     if ((hp = gethostbyname(server_name)) == NULL) 
     {
 	fprintf(stderr, "Could not find host %s\n", server_name);
+	exit(-1);
     }
   
     /* set address */
@@ -72,14 +68,15 @@ int main(int argc, char * argv[]) {
     sa.sin_family = AF_INET;
   
     /* connect to the server socket */
-    if (connect(sd, (struct sockaddr *)&sa, sizeof(sa))<0)
+    if (minet_connect(sd, (struct sockaddr_in *)&sa)<0)
     {
-	fprintf(stderr, "Failed connect\n"); 
+	fprintf(stderr, "Failed connect\n");
+	exit(-1);
     }
   
     /* send request message */
-    sprintf(req, "GET /%s HTTP/1.0\r\n\r\n", server_path);
-    send(sd, req, strlen(req), 0);
+    sprintf(req, "GET %s%s HTTP/1.0\r\n\r\n", server_path[0] == '/' ? " " : " /", server_path);
+    minet_write(sd, req, strlen(req));
   
     /* set up timeout */
     timeout.tv_sec = 10;
@@ -88,11 +85,19 @@ int main(int argc, char * argv[]) {
     /* wait till socket can be read. */
     FD_ZERO(&read_fd);
     FD_SET(sd, &read_fd);
-    int rc = select(sd+1, &read_fd, NULL, NULL, &timeout);
+    if(minet_select(sd+1, &read_fd, NULL, NULL, &timeout) == -1)
+    {
+	fprintf(stderr, "Failed connect\n"); 
+	exit(-1);
+    }
   
     /* check response header code */
     char header[12];
-    int n = read(sd, header, 12);
+    if(minet_read(sd, header, 12) <= 0)
+    {
+    	fprintf(stderr, "Failed to read header\n");
+	exit(-1);
+    }
     int responseCode = atoi(header+9);
     
     /* read socket */
@@ -108,10 +113,10 @@ int main(int argc, char * argv[]) {
     		/* check for end of header \r\n\r\n */ 
     		if(*c == '\r')
     		{
-    			if(read(sd, block, 3) < 0)
+    			if(minet_read(sd, block, 3) < 0)
     			{
     				fprintf(stderr, "Could not read block in header\n");
-    				return -1;
+				exit(-1);
     			}
     			
     			block[3] = '\0';
@@ -126,8 +131,9 @@ int main(int argc, char * argv[]) {
     	/* print out the rest of the response: real web content */
     	do
     	{
-    		res = read(sd, c, 1);
-    		printf("%c", c[0]);
+    		res = minet_read(sd, c, 1);
+    		if(res > 0)
+    			printf("%c", c[0]);
     	} while(res > 0);
     }
     else
@@ -136,16 +142,15 @@ int main(int argc, char * argv[]) {
     	printf("%s", header);
     	do
     	{
-    		res = read(sd, c, 1);
-    		printf("%c", c[0]);
+    		res = minet_read(sd, c, 1);
+    		if(res > 0)
+    			printf("%c", c[0]);
     	} while(res > 0);
     }
 
     /*close socket and deinitialize */
-    shutdown(sd, 0);
+    minet_close(sd);
     free(req);
-  
-    fflush(stdout);
     if (ok) {
 	return 0;
     } else {
