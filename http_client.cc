@@ -50,7 +50,7 @@ int main(int argc, char * argv[])
 	exit(-1);
     }
   
-    /* make socket */
+    /* make tcp socket */
     int sd=minet_socket(SOCK_STREAM);
   
     /* get host IP address  */
