@@ -57,6 +57,7 @@ int main(int argc, char * argv[])
     if ((hp = gethostbyname(server_name)) == NULL) 
     {
 	fprintf(stderr, "Could not find host %s\n", server_name);
+	exit(-1);
     }
   
     /* set address */
@@ -69,7 +70,8 @@ int main(int argc, char * argv[])
     /* connect to the server socket */
     if (connect(sd, (struct sockaddr *)&sa, sizeof(sa))<0)
     {
-	fprintf(stderr, "Failed connect\n"); 
+	fprintf(stderr, "Failed connect\n");
+	exit(-1);
     }
   
     /* send request message */
@@ -83,11 +85,19 @@ int main(int argc, char * argv[])
     /* wait till socket can be read. */
     FD_ZERO(&read_fd);
     FD_SET(sd, &read_fd);
-    int rc = select(sd+1, &read_fd, NULL, NULL, &timeout);
+    if(select(sd+1, &read_fd, NULL, NULL, &timeout) == -1)
+    {
+	fprintf(stderr, "Failed connect\n"); 
+	exit(-1);
+    }
   
     /* check response header code */
     char header[12];
-    int n = read(sd, header, 12);
+    if(read(sd, header, 12) <= 0)
+    {
+    	fprintf(stderr, "Failed to read header\n");
+	exit(-1);
+    }
     int responseCode = atoi(header+9);
     
     /* read socket */
@@ -106,7 +116,7 @@ int main(int argc, char * argv[])
     			if(read(sd, block, 3) < 0)
     			{
     				fprintf(stderr, "Could not read block in header\n");
-    				return -1;
+				exit(-1);
     			}
     			
     			block[3] = '\0';
@@ -143,7 +153,7 @@ int main(int argc, char * argv[])
     shutdown(sd, 0);
     printf("Shutdown\n");
     free(req);
-    printf("\Free'd req\n");
+    printf("Free'd req\n");
   
     fflush(stdout);
     if (ok) {
