@@ -137,10 +137,13 @@ int main(int argc, char * argv[])
     			printf("%c", c[0]);
     	} while(res > 0);
     }
+    printf("\nFinished content\n");
 
     /*close socket and deinitialize */
     shutdown(sd, 0);
+    printf("Shutdown\n");
     free(req);
+    printf("\Free'd req\n");
   
     fflush(stdout);
     if (ok) {
