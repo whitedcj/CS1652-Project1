@@ -96,7 +96,7 @@ int handle_connection(int sock) {
 				amount = 0;
 		        n = 0;
 		        while (amount < strlen(write_buf)) {
-		            n = send(sock, write_buf + amount, strlen(write_buf) - amount, 0);
+		            n = minet_write(sock, write_buf + amount, strlen(write_buf) - amount);
 		            if(n < 0) {
 		                perror("Send file failed");
 		                exit(-1);
