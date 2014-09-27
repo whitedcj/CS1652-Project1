@@ -79,7 +79,7 @@ int main(int argc, char * argv[])
     if(server_path[0] != '/')
     	sprintf(req, "GET /%s HTTP/1.0\r\n\r\n", server_path);
     else
-    	sprintf(req, "GET %s HTTP/1.0\r\n\r\n", server_path)
+    	sprintf(req, "GET %s HTTP/1.0\r\n\r\n", server_path);
     minet_write(sd, req, strlen(req));
   
     /* set up timeout */
