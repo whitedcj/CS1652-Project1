@@ -180,13 +180,13 @@ int main (int argc, char** argv) {
     //bind the init_sock
     if(minet_bind(init_sock, (struct sockaddr_in *)&addr) < 0) {
         perror("Bind failed");
-        exit( EXIT_FAILURE );
+        exit(-1);
     }
     
     //listen for incoming connections with a backlog of 10
     if(minet_listen(init_sock , 10) < 0) {
         perror("Listen failed");
-        exit( EXIT_FAILURE );
+        exit(-1);
     }
 
     while(1 == 1) {
