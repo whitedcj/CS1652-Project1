@@ -35,7 +35,8 @@ int main(int argc, char * argv[])
     server_path = argv[4];
 
     req = (char *)malloc(strlen("GET  HTTP/1.0\r\n\r\n") 
-			 + strlen(server_path) + 2);  
+			 + strlen(server_path) + 2);
+    printf("Request: %s\n", req);
 
     /* initialize */
     if (toupper(*(argv[1])) == 'K')
