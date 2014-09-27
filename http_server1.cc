@@ -36,6 +36,7 @@ int handle_connection(int sock) {
     //this for loop calculates the size of the filename (j) and the starting index (start_fname)
     j = 0;
     for(i = 0; i < n; i++) {
+        printf("i is %d readbuf is %c start_fname is %d and j is %d\n", i, read_buf[i], start_fname, j);
         if (read_buf[i] != ' ' && start_fname != 0) {
             j++;
         } else if (read_buf[i] == ' ' && start_fname == 0) {
@@ -54,8 +55,9 @@ int handle_connection(int sock) {
     
     /* Assumption: this is a GET request and filename contains no spaces*/
     /* try opening the file */
-    fname = (char *)malloc(sizeof(char) * j);
+    fname = (char *)malloc(sizeof(char) * (j+1));
     strncpy(fname, read_buf+start_fname, j);
+    printf("file name is %s\n", fname);
     fp = fopen(fname, "r");
 
     if (!fp) {
